@@ -4,7 +4,7 @@ services:
   db:
     image: postgres
     env_file: ".db.env"
-    container_name: comic_db
+    container_name: comic_postgres
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
     ports:
