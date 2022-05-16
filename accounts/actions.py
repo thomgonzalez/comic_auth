@@ -7,6 +7,7 @@ class UserAction(object):
 	def create(self, **kwargs):
 		instance = User(**kwargs)
 		instance.set_password(kwargs.get('password'))
+		instance.is_staff = True
 		instance.save()
 		return instance
 
