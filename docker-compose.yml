@@ -11,6 +11,7 @@ services:
       - "5432:5432"
   mongo:
     image: mongo:latest
+    env_file: ".db.env"
     container_name: comic_mongo
     restart: always
     environment: 
@@ -18,9 +19,9 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=root
       - MONGO_INITDB_DATABASE=mongo_db
     volumes:
-      - ${PWD}/_data/mongo:/data/db
-      - ${PWD}/docker/_mongo/fixtures:/import
-      - ${PWD}/docker/_mongo/scripts/init.sh:/docker-entrypoint-initdb.d/setup.sh
+      - ./mongo_data:/data/db
+      - ./mongo_data/docker/_mongo/fixtures:/import
+      - ./mongo_data/docker/_mongo/scripts/init.sh:/docker-entrypoint-initdb.d/setup.sh
     ports:
       - 27017:27017
     links:
@@ -41,3 +42,4 @@ services:
       - db
 volumes:
   postgres_data:
+  mongo_data:
