@@ -10,22 +10,21 @@ services:
     ports:
       - "5432:5432"
   mongo:
-    image: mongo
+    image: mongo:latest
     container_name: comic_mongo
     restart: always
-    env_file: ".db.env"
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
-      - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
-      - MONGO_INITDB_USERNAME=${MONGO_DB_USERNAME}
-      - MONGO_INITDB_PASSWORD=${MONGO_DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=mongo_db
     volumes:
       - ${PWD}/_data/mongo:/data/db
       - ${PWD}/docker/_mongo/fixtures:/import
       - ${PWD}/docker/_mongo/scripts/init.sh:/docker-entrypoint-initdb.d/setup.sh
     ports:
       - 27017:27017
+    links:
+      - mongodb
   backend:
     build:
       context: .

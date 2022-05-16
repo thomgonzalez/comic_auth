@@ -18,6 +18,9 @@ class TestView(APIView):
 	permission_classes = (AllowAny,)
 
 	def get(self, request):
+		from pymongo import MongoClient
+		client = MongoClient() 
+		print(client)
 		return Response([], status=200)
 
 
