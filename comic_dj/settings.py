@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -74,11 +78,16 @@ WSGI_APPLICATION = 'comic_dj.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+	"default": {
+		"ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.postgresql"),
+		"NAME": os.environ.get("POSTGRES_DB", "postgres"),
+		"USER": os.environ.get("POSTGRES_USER", "user"),
+		"PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
+		"HOST": os.environ.get("POSTGRES_SERVER", "localhost"),
+		"PORT": os.environ.get("POSTGRES_PORT", "5432"),
+	}
 }
+
 
 
 # Password validation
@@ -99,6 +108,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# REST framework
+REST_FRAMEWORK = {
+	# Use Django's standard `django.contrib.auth` permissions,
+	# or allow read-only access for unauthenticated users.
+	'DEFAULT_PERMISSION_CLASSES': (
+		'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+		'rest_framework.permissions.IsAuthenticated',
+		'rest_framework.permissions.DjangoModelPermissions',
+	),
+	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework.authentication.BasicAuthentication',
+		'rest_framework.authentication.SessionAuthentication',
+		'rest_framework.authentication.TokenAuthentication',
+	),
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
