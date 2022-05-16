@@ -1,4 +1,3 @@
-
 from django.db.models.query import EmptyQuerySet
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -29,7 +28,7 @@ class UserViewSet(GenericViewSet):
 		GenericViewSet (class): subclassing the GenericViewSet
 	"""
 	queryset = User.objects.all()
-	serializer_class =  RegisterSerializer
+	serializer_class = RegisterSerializer
 	permission_classes = (AllowAny,)
 
 	def create(self, request):
@@ -43,12 +42,12 @@ class UserViewSet(GenericViewSet):
 		"""
 		created = {'detail': 'The user has been created successfully'}
 		exist = {'User already exists'}
-  
+
 		serializer = RegisterSerializer(data=request.data)
 		serializer.is_valid(raise_exception=True)
-  
+
 		response = create_user(**request.data)
-  
+
 		data = exist if response == True else created
 		return Response(data, status=status.HTTP_200_OK)
 
@@ -59,6 +58,7 @@ class LoginAuthToken(ObtainAuthToken):
 	Args:
 		ObtainAuthToken (class): subclassing the ObtainAuthToken
 	"""
+
 	def get_token(self, user):
 		"""Create and get token
 
@@ -87,11 +87,11 @@ class LoginAuthToken(ObtainAuthToken):
 		if is_valid:
 			user = serializer.validated_data['user']
 			token = self.get_token(user=user)
-		
+
 			serializer = UserSerializer(user)
 			data = serializer.data
 			data.update({'token': str(token)})
-   
+
 			return Response(data, status=status.HTTP_200_OK)
 		else:
 			data = {

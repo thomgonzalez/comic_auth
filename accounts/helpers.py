@@ -5,7 +5,7 @@ def create_user(**kwargs):
 	action = UserAction()
 	age = kwargs.get('age')
 	exist = False
- 
+
 	user = action.get(**{'username': kwargs.get('username')})
 	if not user:
 		kwargs.pop('age')
@@ -20,10 +20,10 @@ def create_user(**kwargs):
 		action.create(**perfil)
 	else:
 		exist = True
-		
+
 	return exist
 
 
 def get_user(**kwargs):
-    action = UserAction()
-    user = action.get(**{'username': kwargs.get('username')})
+	action = UserAction()
+	user = action.get(**{'username': kwargs.get('username')})
