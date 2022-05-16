@@ -1,12 +1,14 @@
 
-from urllib import response
 from django.db.models.query import EmptyQuerySet
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
+from .serializers import UserSerializer, RegisterSerializer
 
+
+from django.contrib.auth.models import User
 from accounts.helpers import create_user
 
 class TestView(APIView):
@@ -18,12 +20,16 @@ class TestView(APIView):
 
 
 class UserViewSet(GenericViewSet):
-	queryset = EmptyQuerySet
+	queryset = User.objects.all()
+	serializer_class =  RegisterSerializer
 	permission_classes = (AllowAny,)
 
 	def create(self, request):
 		created = {'detail': 'The user has been created successfully'}
 		exist = {'User already exists'}
+  
+		serializer = RegisterSerializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
   
 		response = create_user(**request.data)
   

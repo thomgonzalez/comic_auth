@@ -6,6 +6,7 @@ class UserAction(object):
 
 	def create(self, **kwargs):
 		instance = User(**kwargs)
+		instance.set_password(kwargs.get('password'))
 		instance.save()
 		return instance
 
@@ -15,11 +16,6 @@ class UserAction(object):
 		except User.DoesNotExist:
 			return None
 
-	def filter(self, **kwargs):
-		try:
-			return User.objects.filter(**kwargs)
-		except User.DoesNotExist:
-			return None
 
 class PerfileAction(object):
 
