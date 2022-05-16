@@ -85,7 +85,20 @@ DATABASES = {
 		"PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
 		"HOST": os.environ.get("POSTGRES_SERVER", "localhost"),
 		"PORT": os.environ.get("POSTGRES_PORT", "5432"),
-	}
+	},
+    "nonrel": {
+        "ENGINE": "djongo",
+        "NAME": os.environ.get('MONGO_DB_NAME'),
+        "CLIENT": {
+            "host": os.environ.get('MONGO_DB_HOST'),
+            "port": int(os.environ.get('MONGO_DB_PORT')),
+            "username": os.environ.get('MONGO_DB_USERNAME'),
+            "password": os.environ.get('MONGO_DB_PASSWORD'),
+        },
+        'TEST': {
+            'MIRROR': 'default',
+        },
+    }
 }
 
 
@@ -145,3 +158,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+DATABASE_ROUTERS = ['core.utils.db_routers.NonRelRouter', ]

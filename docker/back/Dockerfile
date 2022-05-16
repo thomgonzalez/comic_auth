@@ -1,19 +1,32 @@
 # Django
 FROM python:3.8
+
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
 ARG APP=/code
 
 WORKDIR ${APP}
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev \
-    postgresql-client
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    python3-dev \
+    libjpeg-dev \
+    zlib1g-dev \
+    gcc \
+    libc-dev \
+    bash \
+    postgresql-client \
+    && pip install --upgrade pip
+
 
 COPY . ${APP}
 
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip --no-cache-dir install -r requirements.txt
 
 EXPOSE ${PORT}
 
