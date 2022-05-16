@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-mongo_data/
+_data/
 postgres_data/*
+
+# PyCharm
+.idea
