@@ -22,3 +22,8 @@ def create_user(**kwargs):
 		exist = True
 		
 	return exist
+
+
+def get_user(**kwargs):
+    action = UserAction()
+    user = action.get(**{'username': kwargs.get('username')})

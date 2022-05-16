@@ -23,3 +23,9 @@ class PerfileAction(object):
 		instance = Profile(**kwargs)
 		instance.save()
 		return instance
+
+	def get(self, **kwargs):
+		try:
+			return Profile.objects.get(**kwargs)
+		except Profile.DoesNotExist:
+			return None

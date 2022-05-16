@@ -1,20 +1,31 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from accounts.actions import PerfileAction
+
 
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField('get_popularity')
+    name = serializers.SerializerMethodField()
+    age = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ['id', 'name', ]
+        fields = (
+            'id', 
+            'name', 
+            'age',
+        )
         
-    def name(self, obj):
+    def get_name(self, obj):
         first_name = obj.first_name
         last_name = obj.last_name
         
-        name = f'{first_name} {last_name}'
-        return name
+        return f'{first_name} {last_name}'
+    
+    def get_age(self, obj):
+        perfil = PerfileAction()
+        queryset = perfil.get(**{'user': obj})
+        return queryset.age if queryset else None
 
 
 class RegisterSerializer(serializers.Serializer):
